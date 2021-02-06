@@ -1,0 +1,97 @@
+
+@import url('https://fonts.googleapis.com/css?family=Product+Sans:400,700');
+@import url('https://fonts.googleapis.com/css?family=Big+Shoulders+Display:500,800');
+
+$family-visual: 'Big Shoulders Display', cursive;
+$family-sans-serif: Arial, sans-serif;
+
+// Import Bulma and Buefy styles
+@import "~bulma/sass/utilities/_all";
+
+
+@import "~bulma";
+@import "~buefy/src/scss/buefy";
+
+html, body, main {
+  height: 100%;
+}
+
+a {
+  text-decoration: underline solid $dark 2px;
+  color: $dark;
+}
+
+hr {
+  height: 4px;
+}
+
+.column {
+  @media screen and (max-width: 767px) {
+    padding: 0;
+  }
+}
+
+.button {
+  border-radius: 12px;
+  height: auto;
+  line-height: 1;
+  font-family: $family-visual;
+  font-weight: 800;
+  
+  &.is-xlarge {
+      font-size: 2rem;
+  }
+
+  &.is-outlined {
+    border: 3px solid;
+  }
+}
+
+.button.is-medium {
+  @media screen and (max-width: 479px) {
+    font-size: 1.15rem;
+  }
+}
+
+.button:focus:not(:active),
+.button.is-focused:not(:active) {
+  box-shadow: none !important;
+}
+
+.buttons {
+  @media screen and (max-width: 479px) {
+    padding: 0 0.5rem;
+  }
+}
+
+.button-start {
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.15);
+
+  &:hover {
+    background-color: #00d1b2 !important;
+  }
+}
+
+.button-restart {
+  &:hover {
+    background-color: #00d1b2 !important;
+    border-color: #00d1b2 !important;
+
+    .mdi-restart {
+      transition: transform 0.3s ease;
+      transform: rotateZ(-135deg);
+      color: white;
+    }
+  }
+
+  .mdi-restart {
+    transition: transform 0.3s ease;
+  }
+}
+
+.b-tooltip.is-primary .tooltip-content {
+  background: black;
+}
+.b-tooltip.is-bottom.is-primary .tooltip-content::before {
+  border-bottom-color: black;
+}

@@ -1,10 +1,13 @@
 <template>
-  <section>
+  <main>
     <Timer />
-    Work. Watch. Repeat.
-    <hr />
+    <section class="homepage-tagline">
+      <div class="container">
+        Work. Watch. Repeat.
+      </div>
+    </section>
     <VideoPreview />
-  </section>
+  </main>
 </template>
 
 <script>
@@ -20,4 +23,13 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss"></style>
+<style lang="scss">
+.homepage-tagline {
+  padding: calc(0.5rem + 1vh) 0;
+  font-size: 1.85rem;
+
+  @media screen and (min-width: 599px) {
+    padding: calc(1vh) 0 calc(1rem + 1vh);
+  }
+}
+</style>

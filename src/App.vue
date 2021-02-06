@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="has-text-centered">
     <Header />
     <Home />
     <Footer />
@@ -21,4 +21,6 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+@import '@/sass/videodoro.scss';
+</style>

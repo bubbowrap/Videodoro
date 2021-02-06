@@ -15,65 +15,44 @@
             inverted
             size="is-large"
             class="button-settings is-medium-mobile"
+            @click="settingsModalActive = true"
           >
             Settings
           </b-button>
         </div>
       </b-navbar-item>
+
+      <b-modal v-model="settingsModalActive" :width="640">
+        <div class="card modal-card has-text-left">
+          <header class="modal-card-head">
+            <h2 class="modal-card-title">Timer Settings</h2>
+            <button
+              type="button"
+              class="delete"
+              @click="settingsModalActive = false"
+            />
+          </header>
+          <div class="card-content">
+            <div class="content"></div>
+          </div>
+        </div>
+      </b-modal>
     </template>
   </b-navbar>
 </template>
 
-<style lang="scss">
-$family-visual: 'Big Shoulders Display', cursive;
-
-.navbar > .container {
-  @media screen and (max-width: 1023px) {
-    align-items: center !important;
-    justify-content: space-between !important;
-    display: flex !important;
-  }
-}
-
-.navbar-menu {
-  @media screen and (max-width: 1023px) {
-    box-shadow: none !important;
-    padding: 0 !important;
-    display: block !important;
-  }
-}
-
-.navbar-brand {
-  h1 {
-    font-family: $family-visual;
-    font-weight: 800;
-    font-size: calc(1.5rem + 3vw);
-    color: black;
-
-    @media screen and (min-width: 1024px) {
-      font-size: 4rem;
+<script>
+export default {
+  data() {
+    return {
+      settingsModalActive: false,
     }
-  }
+  },
 }
+</script>
 
-.button.is-medium-mobile {
-  font-size: 1.25rem !important;
-
-  .mdi-36px.mdi:before {
-    font-size: 24px;
-  }
-}
-
-.button-settings {
-  &:hover {
-    .mdi-cog {
-      transition: all 0.3s ease;
-      transform: rotateZ(45deg);
-    }
-  }
-
-  .mdi-cog {
-    transition: all 0.3s ease;
-  }
+<style lang="scss" scoped>
+.modal {
+  flex-direction: row;
 }
 </style>

@@ -39,31 +39,3 @@
 <script>
 export default {}
 </script>
-
-<style lang="scss" scoped>
-$family-visual: 'Big Shoulders Display', cursive;
-
-.timer {
-  padding: calc(1.5rem + 1vh) 0;
-
-  @media screen and (min-width: 599px) {
-    padding: calc(2rem + 2vh) 0;
-  }
-}
-
-.timer-digits {
-  font-family: $family-visual;
-  color: black;
-  font-size: calc(8rem + 10vw);
-  font-weight: 500;
-  line-height: 1;
-
-  @media screen and (min-width: 1024px) {
-    font-size: 15rem;
-  }
-}
-
-.timer-controls {
-  padding-top: 1rem;
-}
-</style>

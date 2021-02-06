@@ -4,6 +4,7 @@
 
 $family-visual: 'Big Shoulders Display', cursive;
 $family-sans-serif: Arial, sans-serif;
+$primary: #f96854;
 
 // Import Bulma and Buefy styles
 @import "~bulma/sass/utilities/_all";
@@ -12,17 +13,82 @@ $family-sans-serif: Arial, sans-serif;
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
 
+.theme--dark {
+
+}
+
 html, body, main {
   height: 100%;
+}
+
+h2 {
+  font-family: $family-visual;
+  font-size: 3rem;
+  font-weight: 800;
 }
 
 a {
   text-decoration: underline solid $dark 2px;
   color: $dark;
+
+  &:hover {
+    color: $primary;
+    text-decoration: underline solid $primary 2px;
+  }
 }
 
 hr {
   height: 4px;
+}
+
+.navbar > .container {
+  @media screen and (max-width: 1023px) {
+    align-items: center !important;
+    justify-content: space-between !important;
+    display: flex !important;
+  }
+}
+
+.navbar-menu {
+  @media screen and (max-width: 1023px) {
+    box-shadow: none !important;
+    padding: 0 !important;
+    display: block !important;
+  }
+}
+
+.navbar-brand {
+  h1 {
+    font-family: $family-visual;
+    font-weight: 800;
+    font-size: calc(1.5rem + 3vw);
+    color: black;
+
+    @media screen and (min-width: 1024px) {
+      font-size: 4rem;
+    }
+  }
+}
+
+.button.is-medium-mobile {
+  font-size: 1.25rem !important;
+
+  .mdi-36px.mdi:before {
+    font-size: 24px;
+  }
+}
+
+.button-settings {
+  &:hover {
+    .mdi-cog {
+      transition: all 0.3s ease;
+      transform: rotateZ(45deg);
+    }
+  }
+
+  .mdi-cog {
+    transition: all 0.3s ease;
+  }
 }
 
 .column {
@@ -64,18 +130,22 @@ hr {
   }
 }
 
+.button.is-dark.is-inverted {
+  color: #4a4a4a;
+}
+
 .button-start {
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.15);
 
   &:hover {
-    background-color: #00d1b2 !important;
+    background-color: #f96854 !important;
   }
 }
 
 .button-restart {
   &:hover {
-    background-color: #00d1b2 !important;
-    border-color: #00d1b2 !important;
+    background-color: #f96854 !important;
+    border-color: #f96854 !important;
 
     .mdi-restart {
       transition: transform 0.3s ease;
@@ -94,4 +164,50 @@ hr {
 }
 .b-tooltip.is-bottom.is-primary .tooltip-content::before {
   border-bottom-color: black;
+}
+
+.timer {
+  padding: calc(1.5rem + 1vh) 0;
+
+  @media screen and (min-width: 599px) {
+    padding: calc(2rem + 2vh) 0;
+  }
+}
+
+.timer-digits {
+  font-family: $family-visual;
+  color: black;
+  font-size: calc(8rem + 10vw);
+  font-weight: 500;
+  line-height: 1;
+
+  @media screen and (min-width: 1024px) {
+    font-size: 15rem;
+  }
+}
+
+.timer-controls {
+  padding-top: 1rem;
+}
+
+.homepage-tagline {
+  padding: calc(0.5rem + 1vh) 0;
+  font-size: 1.85rem;
+
+  @media screen and (min-width: 599px) {
+    padding: calc(1vh) 0 calc(1rem + 1vh);
+  }
+}
+
+.video-container {
+  padding: 0 0.75rem;
+}
+
+.video-preview {
+  margin: 3rem 0 2rem;
+}
+
+footer {
+  padding: 1rem 0.75rem 2rem;
+  font-size: 0.85rem;
 }

@@ -50,12 +50,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.video-container {
-  padding: 0 0.75rem;
-}
-.video-preview {
-  margin: 3rem 0 2rem;
-}
-</style>

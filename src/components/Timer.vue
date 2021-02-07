@@ -135,7 +135,7 @@ export default {
     updateClock(value) {
       this.isPaused = true
       clearInterval(this.countdown)
-      console.log(this.$refs.workTimeButton.$el.classList)
+
       if (value === 'workTime') {
         this.currentSession = this.workTime
         this.$refs.workTimeButton.$el.classList.remove('is-inverted')

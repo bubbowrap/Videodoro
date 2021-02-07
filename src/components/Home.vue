@@ -10,6 +10,7 @@
       Work. Watch. Repeat.
     </section>
     <VideoPreview />
+    <a href="#" @clicked="console.log(workTime)">hey</a>
   </main>
 </template>
 

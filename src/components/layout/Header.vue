@@ -43,7 +43,7 @@
                   <b-field label="Pomodoro">
                     <b-input
                       type="number"
-                      :value="pomodoro"
+                      v-model.number="workTime"
                       placeholder="Enter Work Time"
                     >
                     </b-input>
@@ -53,7 +53,7 @@
                   <b-field label="Short Break">
                     <b-input
                       type="number"
-                      :value="shortBreak"
+                      v-model.number="shortBreak"
                       placeholder="Enter Short Break Time"
                     >
                     </b-input>
@@ -63,7 +63,7 @@
                   <b-field label="Long Break">
                     <b-input
                       type="number"
-                      :value="longBreak"
+                      v-model.number="longBreak"
                       placeholder="Enter Long Break Time"
                     >
                     </b-input>
@@ -75,7 +75,7 @@
                   <b-field label="Pomodoro Cycles">
                     <b-input
                       type="number"
-                      :value="cycles"
+                      v-model.number="cycles"
                       placeholder="Enter Number of Cycles"
                     >
                     </b-input>
@@ -99,6 +99,9 @@
               </div>
             </div>
           </div>
+          <footer class="modal-card-foot">
+            <b-button label="Save" @click="saveVars" type="is-primary" />
+          </footer>
         </div>
       </b-modal>
     </template>
@@ -116,6 +119,18 @@ export default {
       darkMode: false,
       settingsModalActive: false,
     }
+  },
+  methods: {
+    saveVars() {
+      this.settingsModalActive = false
+      this.$emit('updateVars', {
+        workTime: this.workTime,
+        shortBreak: this.shortBreak,
+        longBreak: this.longBreak,
+        cycles: this.cycles,
+        darkMode: this.darkMode,
+      })
+    },
   },
 }
 </script>

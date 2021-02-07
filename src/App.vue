@@ -1,11 +1,12 @@
 <template>
   <div id="app" class="has-text-centered">
-    <Header />
+    <Header v-on:updateVars="updateVars" />
     <Home
       :workTime="workTime"
       :shortBreak="shortBreak"
       :longBreak="longBreak"
       :cycles="cycles"
+      :key="refreshKey"
     />
     <Footer />
   </div>
@@ -24,12 +25,22 @@ export default {
       shortBreak: 0.03, // 1
       longBreak: 0.09, // 5
       cycles: 2,
+      refreshKey: 0,
     }
   },
   components: {
     Home,
     Header,
     Footer,
+  },
+  methods: {
+    updateVars(formVars) {
+      this.workTime = formVars.workTime
+      this.shortBreak = formVars.shortBreak
+      this.longBreak = formVars.longBreak
+      this.cycles = formVars.cycles
+      this.refreshKey = Math.floor(Math.random() * 10)
+    },
   },
 }
 </script>

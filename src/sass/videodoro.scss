@@ -70,6 +70,10 @@ hr {
   }
 }
 
+.field {
+  margin-bottom: .75rem;
+}
+
 .button.is-medium-mobile {
   font-size: 1.25rem !important;
 
@@ -93,7 +97,15 @@ hr {
 
 .column {
   @media screen and (max-width: 767px) {
-    padding: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+
+  }
+}
+
+.switch.is-medium {
+  .control-label {
+    font-size: 1rem;
   }
 }
 
@@ -149,8 +161,16 @@ hr {
 }
 
 .button-restart {
+  &.is-black.is-outlined:focus {
+    background: transparent;
+    border-color: black;
+    color: black;
 
-  &.is-black.is-outlined:focus,
+    .mdi-restart {
+      transition: transform 0.3s ease;
+    }
+  }
+
   &:hover {
     background-color: #f96854 !important;
     border-color: #f96854 !important;
@@ -164,6 +184,7 @@ hr {
 
   .mdi-restart {
     transition: transform 0.3s ease;
+    transform: rotateZ(0);
   }
 }
 

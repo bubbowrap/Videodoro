@@ -8,20 +8,20 @@
             <b-button
               ref="workTimeButton"
               class="is-medium is-dark is-black"
-              @click="updateClock('workTime', $event)"
+              @click="updateClock('workTime')"
               >Pomodoro</b-button
             >
             <b-button
               ref="sBreakButton"
               class="is-medium is-dark is-black is-inverted"
-              @click="updateClock('shortBreak', $event)"
+              @click="updateClock('shortBreak')"
             >
               Short Break</b-button
             >
             <b-button
               ref="lBreakButton"
               class="is-medium is-dark is-black is-inverted"
-              @click="updateClock('longBreak', $event)"
+              @click="updateClock('longBreak')"
               >Long Break</b-button
             >
           </div>
@@ -65,20 +65,17 @@
 </template>
 
 <script>
-let initialVal = 0.1 // 6
+//const initialVal = 25
 
 export default {
+  props: ['workTime', 'shortBreak', 'longBreak', 'cycles'],
   data() {
     return {
-      workTime: initialVal,
-      shortBreak: 0.03, // 1
-      longBreak: 0.09, // 5
       currentCycle: 0,
-      cycles: 2,
       isPaused: true,
       countdown: 0,
-      seconds: initialVal * 60,
-      currentSession: initialVal,
+      seconds: 0,
+      currentSession: 0,
     }
   },
   watch: {
@@ -161,6 +158,10 @@ export default {
     decrement() {
       this.seconds--
     },
+  },
+  created() {
+    this.seconds = this.workTime * 60
+    this.currentSession = this.workTime
   },
 }
 </script>

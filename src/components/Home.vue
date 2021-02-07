@@ -1,6 +1,11 @@
 <template>
   <main>
-    <Timer />
+    <Timer
+      :workTime="workTime"
+      :shortBreak="shortBreak"
+      :longBreak="longBreak"
+      :cycles="cycles"
+    />
     <section class="homepage-tagline">
       Work. Watch. Repeat.
     </section>
@@ -13,6 +18,7 @@ import Timer from '@/components/Timer.vue'
 import VideoPreview from '@/components/VideoPreview.vue'
 
 export default {
+  props: ['workTime', 'shortBreak', 'longBreak', 'cycles'],
   data() {
     return {
       workPhrases: [

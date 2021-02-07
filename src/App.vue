@@ -1,7 +1,12 @@
 <template>
   <div id="app" class="has-text-centered">
     <Header />
-    <Home />
+    <Home
+      :workTime="workTime"
+      :shortBreak="shortBreak"
+      :longBreak="longBreak"
+      :cycles="cycles"
+    />
     <Footer />
   </div>
 </template>
@@ -13,6 +18,14 @@ import Footer from '@/components/layout/Footer.vue'
 
 export default {
   name: 'App',
+  data() {
+    return {
+      workTime: 25,
+      shortBreak: 0.03, // 1
+      longBreak: 0.09, // 5
+      cycles: 2,
+    }
+  },
   components: {
     Home,
     Header,

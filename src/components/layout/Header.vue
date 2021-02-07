@@ -99,8 +99,13 @@
               </div>
             </div>
           </div>
-          <footer class="modal-card-foot">
-            <b-button label="Save" @click="saveVars" type="is-primary" />
+          <footer class="modal-card-foot buttons is-centered">
+            <b-button
+              label="Save"
+              @click="saveVars"
+              type="is-primary"
+              size="is-large"
+            />
           </footer>
         </div>
       </b-modal>

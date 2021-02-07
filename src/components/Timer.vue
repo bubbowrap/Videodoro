@@ -65,8 +65,6 @@
 </template>
 
 <script>
-//const initialVal = 25
-
 export default {
   props: ['workTime', 'shortBreak', 'longBreak', 'cycles'],
   data() {
@@ -89,6 +87,8 @@ export default {
         // if in work time
         if (this.currentSession === this.workTime) {
           //if complete work time, advance cycle
+          this.$emit('updatePhrase', 'break')
+
           this.currentCycle++
           // if less than cycles, do short break else do long break and then reset the cycles
           if (this.currentCycle <= this.cycles) {
@@ -125,7 +125,14 @@ export default {
       if (!this.isPaused) {
         this.countdown = setInterval(this.decrement, 1000)
       }
+
+      if (this.currentSession === this.workTime) {
+        this.$emit('updatePhrase', 'work')
+      } else {
+        this.$emit('updatePhrase', 'break')
+      }
     },
+
     resetBtnClick() {
       clearInterval(this.countdown)
       this.seconds = this.currentSession * 60
@@ -155,6 +162,7 @@ export default {
         this.$refs.lBreakButton.$el.classList.add('is-inverted')
       }
     },
+
     decrement() {
       this.seconds--
     },

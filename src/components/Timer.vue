@@ -6,18 +6,21 @@
         <div class="column is-three-quarters-tablet is-half-desktop timer">
           <div class="buttons is-centered">
             <b-button
-              class="is-medium is-active"
+              ref="workTimeButton"
+              class="is-medium is-dark is-black"
               @click="updateClock('workTime', $event)"
               >Pomodoro</b-button
             >
             <b-button
-              class="is-medium is-dark is-inverted"
+              ref="sBreakButton"
+              class="is-medium is-dark is-black is-inverted"
               @click="updateClock('shortBreak', $event)"
             >
               Short Break</b-button
             >
             <b-button
-              class="is-medium is-dark is-inverted"
+              ref="lBreakButton"
+              class="is-medium is-dark is-black is-inverted"
               @click="updateClock('longBreak', $event)"
               >Long Break</b-button
             >
@@ -92,9 +95,14 @@ export default {
           this.currentCycle++
           // if less than cycles, do short break else do long break and then reset the cycles
           if (this.currentCycle <= this.cycles) {
+            this.$refs.workTimeButton.$el.classList.add('is-inverted')
+            this.$refs.sBreakButton.$el.classList.remove('is-inverted')
+
             this.currentSession = this.shortBreak
           } else {
             this.currentCycle = 0
+            this.$refs.workTimeButton.$el.classList.add('is-inverted')
+            this.$refs.lBreakButton.$el.classList.remove('is-inverted')
             this.currentSession = this.longBreak
           }
         }
@@ -103,6 +111,10 @@ export default {
           this.currentSession === this.shortBreak ||
           this.currentSession === this.longBreak
         ) {
+          this.$refs.workTimeButton.$el.classList.remove('is-inverted')
+          this.$refs.sBreakButton.$el.classList.add('is-inverted')
+          this.$refs.lBreakButton.$el.classList.add('is-inverted')
+
           this.currentSession = this.workTime
         }
       }
@@ -123,27 +135,27 @@ export default {
       this.isPaused = true
     },
 
-    updateClock(value, e) {
+    updateClock(value) {
       this.isPaused = true
       clearInterval(this.countdown)
-      console.log(e.currentTarget.classList)
+      console.log(this.$refs.workTimeButton.$el.classList)
       if (value === 'workTime') {
         this.currentSession = this.workTime
-        e.currentTarget.classList.remove('is-inverted')
+        this.$refs.workTimeButton.$el.classList.remove('is-inverted')
       } else {
-        e.currentTarget.classList.add('is-inverted')
+        this.$refs.workTimeButton.$el.classList.add('is-inverted')
       }
       if (value === 'shortBreak') {
         this.currentSession = this.shortBreak
-        e.currentTarget.classList.toggle('is-inverted')
+        this.$refs.sBreakButton.$el.classList.remove('is-inverted')
       } else {
-        e.currentTarget.classList.add('is-inverted')
+        this.$refs.sBreakButton.$el.classList.add('is-inverted')
       }
       if (value === 'longBreak') {
         this.currentSession = this.longBreak
-        e.currentTarget.classList.toggle('is-inverted')
+        this.$refs.lBreakButton.$el.classList.remove('is-inverted')
       } else {
-        e.currentTarget.classList.add('is-inverted')
+        this.$refs.lBreakButton.$el.classList.add('is-inverted')
       }
     },
     decrement() {

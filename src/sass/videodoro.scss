@@ -143,6 +143,8 @@ hr {
 }
 
 .button-restart {
+
+  &.is-black.is-outlined:focus,
   &:hover {
     background-color: #f96854 !important;
     border-color: #f96854 !important;

@@ -20,6 +20,11 @@ export default {
         'A little hard work never hurt anyone.',
         'You got this.',
         "Let's do this.",
+        "It's all you.",
+      ],
+      breakPhrases: [
+        'Nice work, you deserve a reward. Pick a video.',
+        'Great job. Pick a video, you deserve it.',
       ],
     }
   },

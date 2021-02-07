@@ -2,9 +2,7 @@
   <main>
     <Timer />
     <section class="homepage-tagline">
-      <div class="container">
-        Work. Watch. Repeat.
-      </div>
+      Work. Watch. Repeat.
     </section>
     <VideoPreview />
   </main>
@@ -15,6 +13,16 @@ import Timer from '@/components/Timer.vue'
 import VideoPreview from '@/components/VideoPreview.vue'
 
 export default {
+  data() {
+    return {
+      workPhrases: [
+        "Let's get it.",
+        'A little hard work never hurt anyone.',
+        'You got this.',
+        "Let's do this.",
+      ],
+    }
+  },
   components: {
     Timer,
     VideoPreview,

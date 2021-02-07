@@ -61,11 +61,11 @@ hr {
   h1 {
     font-family: $family-visual;
     font-weight: 800;
-    font-size: calc(1.5rem + 3vw);
+    font-size: calc(1.5rem + 2.5vw);
     color: black;
 
     @media screen and (min-width: 1024px) {
-      font-size: 4rem;
+      font-size: 3.5rem;
     }
   }
 }

@@ -36,6 +36,7 @@ export default {
         "Let's do this.",
         "It's all you.",
         'Believe in the me that believes in you.',
+        'Work work work work work work',
       ],
       breakPhrases: [
         'Nice work, you deserve a reward. Pick a video.',

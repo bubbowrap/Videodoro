@@ -16,7 +16,7 @@
           : defaultPhrase[0]
       }}
     </section>
-    <VideoPreview />
+    <VideoPreview @startBreakTimer="startBreakTimer" />
   </main>
 </template>
 
@@ -58,6 +58,7 @@ export default {
       phrase === 'break' ? (this.breakTime = true) : (this.breakTime = false)
       console.log(this.breakTime)
     },
+    startBreakTimer() {}
   },
 }
 </script>

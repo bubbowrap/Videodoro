@@ -231,11 +231,38 @@ hr {
 
 .video-container {
   padding: 0 0.75rem;
+  position: relative;
+
+  .card {
+    box-shadow: none;
+    border-radius: 0;
+    background: none;
+  }
+  
+  .card-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .image {
+      flex: 1;
+    }
+  }
+
+  .carousel-list .carousel-slides .carousel-slide {
+    border: 12px solid transparent;
+  }
+  
+  .carousel-list.has-shadow {
+    box-shadow: none;
+  }
 }
 
 .video-preview {
   margin: 3rem 0 2rem;
 }
+
+
 
 footer {
   padding: 1rem 0.75rem 2rem;

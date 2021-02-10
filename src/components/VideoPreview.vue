@@ -24,8 +24,7 @@
               >
               </b-button>
               <figure class="image is-16by9">
-                <img :src="list.image"
-                />
+                <img :src="list.image" />
               </figure>
               <b-tag
                 type="is-black"
@@ -62,9 +61,11 @@
 import axios from 'axios'
 
 export default {
+  props: ['shortBreak', 'longBreak'],
   data() {
     return {
       videoModalActive: false,
+      isLoading: true,
       specs: {
         arrow: true,
         arrowHover: false,
@@ -102,10 +103,11 @@ export default {
       // ],
     }
   },
+  // watch: {
+  //   timerActive() {
+  //   },
+  // },
   methods: {
-    loading() {
-      this.isLoading = true
-    },
     launchVideo(videoId) {
       this.videoModalActive = true
       const checkForPlayer = () => {
@@ -120,6 +122,7 @@ export default {
     },
     loadPlayer(id) {
       let player //eslint-disable-line
+      const _this = this
 
         player = new YT.Player('player', { //eslint-disable-line
         width: '640',
@@ -133,7 +136,7 @@ export default {
 
       function onPlayerReady(event) {
         event.target.playVideo()
-        this.$emit('startBreakTimer')
+        _this.$emit('timerActive')
       }
 
       function onPlayerStateChange(event) {
@@ -142,6 +145,7 @@ export default {
           done = true
         }
       }
+
       function stopVideo() {
         player.stopVideo()
       }
@@ -159,32 +163,60 @@ export default {
   mounted() {},
   created() {
     this.loadScript()
-    this.loading()
     //https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&regionCode=US&key=[YOUR_API_KEY]
 
     const endpoint = 'https://youtube.googleapis.com/youtube/v3/videos?'
     const apiKey = process.env.VUE_APP_YOUTUBE_API_KEY
     const filterTerms =
-      'part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&regionCode=US'
+      'part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&type=video&maxResults=50&regionCode=US&videoCategoryId=10'
     const url = `${endpoint}${filterTerms}&key=${apiKey}`
     axios
       .get(url)
       .then(res => {
-        res.data.items.forEach(item => {
-          this.sliderItems.push({
-            title: item.snippet.title,
-            channel: item.snippet.channelTitle,
-            views: item.statistics.viewCount,
-            image: item.snippet.thumbnails.medium.url,
-            duration: item.contentDetails.duration,
-            videoId: item.id,
+        res.data.items
+          .filter(item => {
+            let videoDuration =
+              item.contentDetails.duration.match(/(?<=PT)(.*)(?=M)/gm) !== null
+                ? item.contentDetails.duration.match(/(?<=PT)(.*)(?=M)/gm)
+                : 0
+            console.log(videoDuration)
+
+            if (videoDuration < 6 && videoDuration >= 4) {
+              return item
+            }
           })
-        })
-        this.isLoading = false
+          .forEach(item => {
+            if (this.sliderItems.length < 9) {
+              this.sliderItems.push({
+                title: item.snippet.title,
+                channel: item.snippet.channelTitle,
+                views: item.statistics.viewCount,
+                image: item.snippet.thumbnails.medium.url,
+                duration: item.contentDetails.duration,
+                videoId: item.id,
+              })
+            }
+          })
         console.log(res.data)
       })
+      // .then(res => {
+      //   res.data.items.forEach(item => {
+      //     this.sliderItems.push({
+      //       title: item.snippet.title,
+      //       channel: item.snippet.channelTitle,
+      //       views: item.statistics.viewCount,
+      //       image: item.snippet.thumbnails.medium.url,
+      //       duration: item.contentDetails.duration,
+      //       videoId: item.id,
+      //     })
+      //   })
+      //   console.log(res.data)
+      // })
       .catch(err => {
         console.error(err)
+      })
+      .finally(() => {
+        this.isLoading = false
       })
   },
 }

@@ -41,7 +41,7 @@
               type="is-black"
               size="is-xlarge"
               class="button-start"
-              @click="timerBtnClick"
+              @click="startInterval"
             >
               {{ isPaused ? 'Start' : 'Pause' }} Timer
             </b-button>
@@ -66,7 +66,7 @@
 
 <script>
 export default {
-  props: ['workTime', 'shortBreak', 'longBreak', 'cycles'],
+  props: ['workTime', 'shortBreak', 'longBreak', 'cycles', 'timerActive'],
   data() {
     return {
       currentCycle: 0,
@@ -86,7 +86,7 @@ export default {
         this.isPaused = true
         // if in work time
         if (this.currentSession === this.workTime) {
-          //if complete work time, advance cycle
+          //if complete work time, advance cycle and update homepage phrase
           this.$emit('updatePhrase', 'break')
 
           this.currentCycle++
@@ -94,7 +94,6 @@ export default {
           if (this.currentCycle <= this.cycles) {
             this.$refs.workTimeButton.$el.classList.add('is-inverted')
             this.$refs.sBreakButton.$el.classList.remove('is-inverted')
-
             this.currentSession = this.shortBreak
           } else {
             this.currentCycle = 0
@@ -116,12 +115,18 @@ export default {
         }
       }
     },
+    timerActive() {
+      if (this.timerActive) {
+        this.startInterval()
+      }
+    },
   },
   methods: {
-    timerBtnClick() {
+    //starts intervals for pomodoro
+    startInterval() {
       this.isPaused = !this.isPaused
       clearInterval(this.countdown)
-
+      //pause logic
       if (!this.isPaused) {
         this.countdown = setInterval(this.decrement, 1000)
       }
@@ -132,17 +137,17 @@ export default {
         this.$emit('updatePhrase', 'break')
       }
     },
-
+    //reset button logic
     resetBtnClick() {
       clearInterval(this.countdown)
       this.seconds = this.currentSession * 60
       this.isPaused = true
     },
-
+    //updates clock
     updateClock(value) {
       this.isPaused = true
       clearInterval(this.countdown)
-
+      //changes the work/break button status
       if (value === 'workTime') {
         this.currentSession = this.workTime
         this.$refs.workTimeButton.$el.classList.remove('is-inverted')
@@ -162,7 +167,7 @@ export default {
         this.$refs.lBreakButton.$el.classList.add('is-inverted')
       }
     },
-
+    //decrements time by one second
     decrement() {
       this.seconds--
     },

@@ -5,6 +5,7 @@
       :shortBreak="shortBreak"
       :longBreak="longBreak"
       :cycles="cycles"
+      :timerActive="timerActive"
       v-on:updatePhrase="updatePhrase"
     />
     <section class="homepage-tagline" ref="taglineText">
@@ -16,7 +17,11 @@
           : defaultPhrase[0]
       }}
     </section>
-    <VideoPreview @startBreakTimer="startBreakTimer" />
+    <VideoPreview
+      v-on:timerActive="setTimerActive"
+      :shortBreak="shortBreak"
+      :longBreak="longBreak"
+    />
   </main>
 </template>
 
@@ -28,6 +33,7 @@ export default {
   props: ['workTime', 'shortBreak', 'longBreak', 'cycles'],
   data() {
     return {
+      timerActive: false,
       defaultPhrase: ['Work. Watch. Repeat.'],
       workPhrases: [
         "Let's get it.",
@@ -58,7 +64,9 @@ export default {
       phrase === 'break' ? (this.breakTime = true) : (this.breakTime = false)
       console.log(this.breakTime)
     },
-    startBreakTimer() {}
+    setTimerActive() {
+      this.timerActive = true
+    },
   },
 }
 </script>

@@ -90,6 +90,7 @@
                         size="is-medium"
                         type="is-warning"
                         class="mt-1"
+                        disabled
                       >
                         {{ darkMode ? 'Light' : 'Dark' }}
                       </b-switch>
@@ -101,9 +102,9 @@
           </div>
           <footer class="modal-card-foot buttons is-centered">
             <b-button
-              label="Save"
+              label="Save Settings"
               @click="saveVars"
-              type="is-primary"
+              type="is-black"
               size="is-large"
             />
           </footer>

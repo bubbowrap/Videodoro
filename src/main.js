@@ -6,10 +6,9 @@ import Buefy from 'buefy'
 Vue.use(Buefy)
 
 Vue.config.productionTip = false
-Vue.component('homepage-tagline', {
-  template:
-    '<section class="homepage-tagline" ref="taglineText">Work. Watch. Repeat.</section>',
-})
+
+export const EventBus = new Vue()
+
 new Vue({
   render: h => h(App),
 }).$mount('#app')

@@ -229,15 +229,71 @@ hr {
   }
 }
 
+.animation-content {
+  @media screen and (max-width: 640px) {
+  margin: 0 40px;
+  float: none;
+  clear: both;
+  width: 100%;
+  position: relative;
+  padding-bottom: 50%;
+  padding-top: 25px;
+  height: 0;
+
+    iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
 .video-container {
   padding: 0 0.75rem;
+  position: relative;
+
+  .card {
+    box-shadow: none;
+    border-radius: 0;
+    background: none;
+  }
+  
+  .card-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .image {
+      flex: 1;
+    }
+  }
+
+  .loading-overlay {
+    z-index: 9;
+  }
+
+  .carousel-list .carousel-slides .carousel-slide {
+    border: 12px solid transparent;
+  }
+  
+  .carousel-list.has-shadow {
+    box-shadow: none;
+  }
 }
 
 .video-preview {
   margin: 3rem 0 2rem;
 }
 
+
+
 footer {
-  padding: 1rem 0.75rem 2rem;
+  padding: 2rem 0.75rem 2rem;
   font-size: 0.85rem;
+
+  @media screen and (min-width: 768px) {
+    padding-top: 2rem;
+  }
 }

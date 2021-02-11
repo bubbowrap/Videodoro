@@ -249,6 +249,10 @@ hr {
     }
   }
 
+  .loading-overlay {
+    z-index: 1;
+  }
+
   .carousel-list .carousel-slides .carousel-slide {
     border: 12px solid transparent;
   }
@@ -265,6 +269,10 @@ hr {
 
 
 footer {
-  padding: 1rem 0.75rem 2rem;
+  padding: 2rem 0.75rem 2rem;
   font-size: 0.85rem;
+
+  @media screen and (min-width: 768px) {
+    padding-top: 2rem;
+  }
 }

@@ -21,9 +21,9 @@ export default {
   name: 'App',
   data() {
     return {
-      workTime: 0.1,
-      shortBreak: 0.03, // 1
-      longBreak: 0.09, // 5
+      workTime: .03,
+      shortBreak: 5, // 1
+      longBreak: 15, // 5
       cycles: 2,
       refreshKey: 0,
     }

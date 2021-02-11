@@ -8,15 +8,24 @@
       v-model="isLoading"
       :can-cancel="false"
     ></b-loading>
-
-    <div class="container">
+    <div
+      class="loading-overlay is-active"
+      v-if="currentSession === 'workTime' || currentSession === 'initialLoad'"
+    >
+      <div class="loading-background"></div>
+    </div>
+    <div :class="`container ${this.currentSession}`">
       <hr />
-      <b-carousel-list :data="sliderItems" v-bind="specs">
+      <b-carousel-list
+        :data="sliderItems"
+        v-bind="specs"
+        v-if="sliderItems.length > 0"
+      >
         <template #item="list">
           <div class="card">
             <div class="card-image">
               <b-button
-                type="is-black"
+                type="is-primary"
                 icon-right="play"
                 size="is-large"
                 style="position: absolute; z-index: 1;"
@@ -53,19 +62,26 @@
           </div>
         </template>
       </b-carousel-list>
+      <div v-else>
+        <p class="subtitle is-5">
+          No videos found matching this duration. Take a walk instead!
+        </p>
+      </div>
     </div>
   </section>
 </template>
 
 <script>
 import axios from 'axios'
+import { EventBus } from './../main'
 
 export default {
-  props: ['shortBreak', 'longBreak'],
+  props: ['shortBreak', 'longBreak', 'currentSession'],
   data() {
     return {
       videoModalActive: false,
       isLoading: true,
+      durationLimit: 5,
       specs: {
         arrow: true,
         arrowHover: false,
@@ -103,10 +119,15 @@ export default {
       // ],
     }
   },
-  // watch: {
-  //   timerActive() {
-  //   },
-  // },
+  watch: {
+    currentSession() {
+      if (this.currentSession === 'longBreak') {
+        this.loadVideos(this.longBreak)
+      } else if (this.currentSession === 'shortBreak') {
+        this.loadVideos(this.shortBreak)
+      }
+    },
+  },
   methods: {
     launchVideo(videoId) {
       this.videoModalActive = true
@@ -122,32 +143,18 @@ export default {
     },
     loadPlayer(id) {
       let player //eslint-disable-line
-      const _this = this
 
         player = new YT.Player('player', { //eslint-disable-line
         width: '640',
         videoId: id,
         events: {
           onReady: onPlayerReady,
-          onStateChange: onPlayerStateChange,
         },
       })
-      let done = false
 
       function onPlayerReady(event) {
         event.target.playVideo()
-        _this.$emit('timerActive')
-      }
-
-      function onPlayerStateChange(event) {
-        if (event.data == YT.PlayerState.PLAYING && !done) { //eslint-disable-line
-          setTimeout(stopVideo, 6000)
-          done = true
-        }
-      }
-
-      function stopVideo() {
-        player.stopVideo()
+        EventBus.$emit('fireTimer')
       }
     },
 
@@ -159,65 +166,59 @@ export default {
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag)
       }
     },
+    loadVideos(durationLimit) {
+      this.sliderItems = []
+      this.isLoading = true
+      const endpoint = 'https://youtube.googleapis.com/youtube/v3/videos?'
+      const apiKey = process.env.VUE_APP_YOUTUBE_API_KEY
+      const filterTerms =
+        'part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&type=video&maxResults=50&regionCode=US&videoCategoryId=10'
+      const url = `${endpoint}${filterTerms}&key=${apiKey}`
+      axios
+        .get(url)
+        .then(res => {
+          res.data.items
+            .filter(item => {
+              //grabs minute duration of video
+              let videoDuration =
+                item.contentDetails.duration.match(/(?<=PT)(.*)(?=M)/gm) !==
+                null
+                  ? item.contentDetails.duration.match(/(?<=PT)(.*)(?=M)/gm)
+                  : 0
+
+              if (
+                videoDuration < durationLimit &&
+                videoDuration > durationLimit - 2
+              ) {
+                return item
+              }
+            })
+            .forEach(item => {
+              if (this.sliderItems.length < 9) {
+                this.sliderItems.push({
+                  title: item.snippet.title,
+                  channel: item.snippet.channelTitle,
+                  views: item.statistics.viewCount,
+                  image: item.snippet.thumbnails.medium.url,
+                  duration: item.contentDetails.duration,
+                  videoId: item.id,
+                })
+              }
+            })
+          //console.log(res.data)
+        })
+        .catch(err => {
+          console.error(err)
+        })
+        .finally(() => {
+          this.isLoading = false
+          this.$emit('loadThis')
+        })
+    },
   },
-  mounted() {},
   created() {
     this.loadScript()
-    //https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&regionCode=US&key=[YOUR_API_KEY]
-
-    const endpoint = 'https://youtube.googleapis.com/youtube/v3/videos?'
-    const apiKey = process.env.VUE_APP_YOUTUBE_API_KEY
-    const filterTerms =
-      'part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&type=video&maxResults=50&regionCode=US&videoCategoryId=10'
-    const url = `${endpoint}${filterTerms}&key=${apiKey}`
-    axios
-      .get(url)
-      .then(res => {
-        res.data.items
-          .filter(item => {
-            let videoDuration =
-              item.contentDetails.duration.match(/(?<=PT)(.*)(?=M)/gm) !== null
-                ? item.contentDetails.duration.match(/(?<=PT)(.*)(?=M)/gm)
-                : 0
-            console.log(videoDuration)
-
-            if (videoDuration < 6 && videoDuration >= 4) {
-              return item
-            }
-          })
-          .forEach(item => {
-            if (this.sliderItems.length < 9) {
-              this.sliderItems.push({
-                title: item.snippet.title,
-                channel: item.snippet.channelTitle,
-                views: item.statistics.viewCount,
-                image: item.snippet.thumbnails.medium.url,
-                duration: item.contentDetails.duration,
-                videoId: item.id,
-              })
-            }
-          })
-        console.log(res.data)
-      })
-      // .then(res => {
-      //   res.data.items.forEach(item => {
-      //     this.sliderItems.push({
-      //       title: item.snippet.title,
-      //       channel: item.snippet.channelTitle,
-      //       views: item.statistics.viewCount,
-      //       image: item.snippet.thumbnails.medium.url,
-      //       duration: item.contentDetails.duration,
-      //       videoId: item.id,
-      //     })
-      //   })
-      //   console.log(res.data)
-      // })
-      .catch(err => {
-        console.error(err)
-      })
-      .finally(() => {
-        this.isLoading = false
-      })
+    this.loadVideos(this.shortBreak)
   },
 }
 </script>

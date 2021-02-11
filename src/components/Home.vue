@@ -5,8 +5,7 @@
       :shortBreak="shortBreak"
       :longBreak="longBreak"
       :cycles="cycles"
-      :timerActive="timerActive"
-      v-on:updatePhrase="updatePhrase"
+      v-on:currentSession="updatePhrase"
     />
     <section class="homepage-tagline" ref="taglineText">
       {{
@@ -18,9 +17,11 @@
       }}
     </section>
     <VideoPreview
-      v-on:timerActive="setTimerActive"
       :shortBreak="shortBreak"
       :longBreak="longBreak"
+      :currentSession="currentSession"
+      v-if="(loaded = true)"
+      v-on:loadThis="loadVideoCarousel"
     />
   </main>
 </template>
@@ -33,7 +34,8 @@ export default {
   props: ['workTime', 'shortBreak', 'longBreak', 'cycles'],
   data() {
     return {
-      timerActive: false,
+      loaded: false,
+      currentSession: '',
       defaultPhrase: ['Work. Watch. Repeat.'],
       workPhrases: [
         "Let's get it.",
@@ -60,13 +62,33 @@ export default {
   },
   methods: {
     updatePhrase(phrase) {
-      phrase === 'work' ? (this.workPhase = true) : (this.workPhase = false)
+      phrase === 'workTime' ? (this.workPhase = true) : (this.workPhase = false)
       phrase === 'break' ? (this.breakTime = true) : (this.breakTime = false)
-      console.log(this.breakTime)
+      phrase === 'initialLoad'
+        ? (this.workPhase = true)
+        : (this.workPhase = false)
+
+      this.currentSession = phrase
     },
-    setTimerActive() {
-      this.timerActive = true
+    loadVideoCarousel() {
+      this.loaded = true
     },
   },
 }
 </script>
+
+<style>
+.slide-fade-enter-active {
+  transition: all 0.3s ease;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter,
+.slide-fade-leave-active {
+  transform: translateY(20px);
+  opacity: 0;
+}
+</style>

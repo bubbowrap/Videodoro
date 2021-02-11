@@ -104,7 +104,7 @@
             <b-button
               label="Save Settings"
               @click="saveVars"
-              type="is-dark"
+              type="is-black"
               size="is-large"
             />
           </footer>

@@ -65,8 +65,8 @@ export default {
       phrase === 'workTime' ? (this.workPhase = true) : (this.workPhase = false)
       phrase === 'break' ? (this.breakTime = true) : (this.breakTime = false)
       phrase === 'initialLoad'
-        ? (this.workPhase = true)
-        : (this.workPhase = false)
+        ? (this.workPhase = false)
+        : (this.breaktTime = false)
 
       this.currentSession = phrase
     },

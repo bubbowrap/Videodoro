@@ -145,7 +145,7 @@ export default {
       let player //eslint-disable-line
 
         player = new YT.Player('player', { //eslint-disable-line
-        width: '640',
+        width: '100%',
         videoId: id,
         events: {
           onReady: onPlayerReady,
@@ -186,10 +186,7 @@ export default {
                   ? item.contentDetails.duration.match(/(?<=PT)(.*)(?=M)/gm)
                   : 0
 
-              if (
-                videoDuration < durationLimit &&
-                videoDuration > durationLimit - 2
-              ) {
+              if (videoDuration < durationLimit) {
                 return item
               }
             })

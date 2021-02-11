@@ -30,12 +30,21 @@
               `${Math.floor(
                 seconds / 60 > 10 ? seconds / 60 : '0' + seconds / 60
               )}:${
-                seconds % 60 > 10
+                seconds % 60 >= 10
                   ? Math.floor(seconds % 60)
                   : '0' + Math.floor(seconds % 60)
               }`
             }}
           </div>
+
+          <audio id="sessionComplete" ref="sessionComplete">
+            <source
+              src="@/assets/audio/lift_arrive_beep.mp3"
+              type="audio/mpeg"
+            />
+            Your browser does not support the audio element.
+          </audio>
+
           <div class="timer-controls buttons is-centered">
             <b-button
               type="is-black"
@@ -82,8 +91,10 @@ export default {
     currentSessionDuration() {
       this.seconds = this.currentSessionDuration * 60
     },
+    //When seconds reach zero, do stuff
     seconds() {
       if (this.seconds <= 0) {
+        this.$refs.sessionComplete.play()
         clearInterval(this.countdown)
         this.isPaused = true
         // if in work time

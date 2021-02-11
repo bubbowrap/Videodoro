@@ -19,6 +19,7 @@ $primary: #f96854;
 
 html, body, main {
   height: 100%;
+  overflow-x: hidden;
 }
 
 h2 {
@@ -138,6 +139,9 @@ hr {
 
 .buttons {
   @media screen and (max-width: 479px) {
+    &.modal-card-foot {
+      padding: 1rem 0.5rem;
+    }
     padding: 0 0.5rem;
   }
 }
@@ -229,27 +233,6 @@ hr {
   }
 }
 
-.animation-content {
-  @media screen and (max-width: 640px) {
-  margin: 0 40px;
-  float: none;
-  clear: both;
-  width: 100%;
-  position: relative;
-  padding-bottom: 50%;
-  padding-top: 25px;
-  height: 0;
-
-    iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-  }
-}
-
 .video-container {
   padding: 0 0.75rem;
   position: relative;
@@ -285,6 +268,27 @@ hr {
   
   .carousel-list.has-shadow {
     box-shadow: none;
+  }
+
+  .animation-content {
+    @media screen and (max-width: 640px) {
+    margin: 0 40px;
+    float: none;
+    clear: both;
+    width: 100%;
+    position: relative;
+    padding-bottom: 50%;
+    padding-top: 25px;
+    height: 0;
+
+      iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+    }
   }
 }
 

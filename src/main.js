@@ -1,7 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
 import Buefy from 'buefy'
-//import 'buefy/dist/buefy.css'
+const moment = require('moment')
+
+Vue.use(require('vue-moment'), {
+  moment,
+})
 
 Vue.use(Buefy)
 

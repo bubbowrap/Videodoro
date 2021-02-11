@@ -278,6 +278,11 @@ hr {
     border: 12px solid transparent;
   }
   
+  .carousel-arrow .icon.has-icons-left, .carousel-arrow .icon.has-icons-right {
+    top: 30%;
+    transform: translateY(-30%);
+  }
+  
   .carousel-list.has-shadow {
     box-shadow: none;
   }

@@ -39,12 +39,7 @@
                 type="is-black"
                 rounded
                 style="position: absolute; bottom: 5px; right: 5px; border-radius: 0;"
-                ><b>{{
-                  list.duration
-                    .replace('PT', '')
-                    .replace('M', ':')
-                    .replace('S', '')
-                }}</b></b-tag
+                ><b>{{ list.duration }}</b></b-tag
               >
             </div>
             <div class="card-content">
@@ -64,7 +59,7 @@
       </b-carousel-list>
       <div v-else>
         <p class="subtitle is-5">
-          No videos found matching this duration. Take a walk instead!
+          No videos matching the break duration. Go do something else.
         </p>
       </div>
     </div>
@@ -74,6 +69,7 @@
 <script>
 import axios from 'axios'
 import { EventBus } from './../main'
+import moment from 'moment'
 
 export default {
   props: ['shortBreak', 'longBreak', 'currentSession'],
@@ -82,6 +78,7 @@ export default {
       videoModalActive: false,
       isLoading: true,
       durationLimit: 5,
+      prevWork: true,
       specs: {
         arrow: true,
         arrowHover: false,
@@ -103,28 +100,29 @@ export default {
         },
       },
       sliderItems: [],
-      // sliderItems: [
-      //   {
-      //     title: 'Slide 1',
-      //     image: this.previewThumbnails[0],
-      //   },
-      //   {
-      //     title: 'Slide 2',
-      //     image: require('@/assets/export-preview.jpg'),
-      //   },
-      //   {
-      //     title: 'Slide 3',
-      //     image: require('@/assets/export-preview.jpg'),
-      //   },
-      // ],
     }
   },
   watch: {
     currentSession() {
+      //only reloads videos if the previous session wasn't a work session.
+      if (
+        this.currentSession === 'workTime' ||
+        this.currentSession === 'initialLoad'
+      ) {
+        ;(this.prevWork = true), this.loadVideos(this.shortBreak)
+      }
+
       if (this.currentSession === 'longBreak') {
-        this.loadVideos(this.longBreak)
-      } else if (this.currentSession === 'shortBreak') {
-        this.loadVideos(this.shortBreak)
+        if (this.prevWork === false) {
+          this.loadVideos(this.longBreak)
+        }
+        this.prevWork = false
+      }
+      if (this.currentSession === 'shortBreak') {
+        if (this.prevWork === false) {
+          this.loadVideos(this.shortBreak)
+        }
+        this.prevWork = false
       }
     },
   },
@@ -157,7 +155,12 @@ export default {
         EventBus.$emit('fireTimer')
       }
     },
-
+    shuffleVideos(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1))
+        ;[arr[i], arr[j]] = [arr[j], arr[i]]
+      }
+    },
     loadScript() {
       if (typeof YT == 'undefined' || typeof YT.Player == 'undefined') { //eslint-disable-line
         var tag = document.createElement('script')
@@ -177,6 +180,7 @@ export default {
       axios
         .get(url)
         .then(res => {
+          this.shuffleVideos(res.data.items)
           res.data.items
             .filter(item => {
               //grabs minute duration of video
@@ -191,13 +195,19 @@ export default {
               }
             })
             .forEach(item => {
-              if (this.sliderItems.length < 9) {
+              if (this.sliderItems.length < 12) {
                 this.sliderItems.push({
                   title: item.snippet.title,
                   channel: item.snippet.channelTitle,
                   views: item.statistics.viewCount,
                   image: item.snippet.thumbnails.medium.url,
-                  duration: item.contentDetails.duration,
+                  duration: moment
+                    .utc(
+                      moment
+                        .duration(item.contentDetails.duration)
+                        .asMilliseconds()
+                    )
+                    .format('mm:ss'),
                   videoId: item.id,
                 })
               }

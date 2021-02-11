@@ -124,7 +124,6 @@ export default {
           this.$refs.workTimeButton.$el.classList.remove('is-inverted')
           this.$refs.sBreakButton.$el.classList.add('is-inverted')
           this.$refs.lBreakButton.$el.classList.add('is-inverted')
-
           this.currentSessionDuration = this.workTime
         }
       }
@@ -160,7 +159,7 @@ export default {
       if (value === 'workTime') {
         this.currentSessionDuration = this.workTime
         this.$refs.workTimeButton.$el.classList.remove('is-inverted')
-        this.$emit('currentSession', 'workTime')
+        this.$emit('currentSession', 'initialLoad')
       } else {
         this.$refs.workTimeButton.$el.classList.add('is-inverted')
       }

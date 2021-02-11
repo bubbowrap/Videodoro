@@ -157,7 +157,12 @@ export default {
         EventBus.$emit('fireTimer')
       }
     },
-
+    shuffleVideos(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1))
+        ;[arr[i], arr[j]] = [arr[j], arr[i]]
+      }
+    },
     loadScript() {
       if (typeof YT == 'undefined' || typeof YT.Player == 'undefined') { //eslint-disable-line
         var tag = document.createElement('script')
@@ -177,6 +182,7 @@ export default {
       axios
         .get(url)
         .then(res => {
+          this.shuffleVideos(res.data.items)
           res.data.items
             .filter(item => {
               //grabs minute duration of video

@@ -17,8 +17,11 @@ $primary: #f96854;
 
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html, body, main {
-  height: 100%;
   overflow-x: hidden;
 }
 
@@ -236,6 +239,7 @@ hr {
 .video-container {
   padding: 0 0.75rem;
   position: relative;
+  min-height: 30vh;
 
   .card {
     box-shadow: none;

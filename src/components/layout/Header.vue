@@ -82,7 +82,7 @@
                   </b-field>
                 </div>
                 <div class="column">
-                  <b-field label="Theme Color">
+                  <b-field label="Theme Color (N/A)">
                     <b-field>
                       <b-switch
                         v-model="darkMode"
@@ -124,18 +124,26 @@ export default {
       cycles: 1,
       darkMode: false,
       settingsModalActive: false,
+      pomodoroSettings: {},
     }
   },
   methods: {
     saveVars() {
       this.settingsModalActive = false
-      this.$emit('updateVars', {
+      this.pomodoroSettings = {
         workTime: this.workTime,
         shortBreak: this.shortBreak,
         longBreak: this.longBreak,
         cycles: this.cycles,
         darkMode: this.darkMode,
-      })
+      }
+
+      localStorage.setItem(
+        'pomodoroSettings',
+        JSON.stringify(this.pomodoroSettings)
+      )
+
+      this.$emit('updateVars', this.pomodoroSettings)
     },
   },
 }

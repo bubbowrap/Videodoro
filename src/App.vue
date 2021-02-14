@@ -26,6 +26,7 @@ export default {
       longBreak: 15,
       cycles: 2,
       refreshKey: 0,
+      pomodoroSettings: {},
     }
   },
   components: {
@@ -41,6 +42,19 @@ export default {
       this.cycles = formVars.cycles
       this.refreshKey = Math.floor(Math.random() * 10)
     },
+  },
+  created() {
+    if (localStorage.getItem('pomodoroSettings')) {
+      this.pomodoroSettings = JSON.parse(
+        localStorage.getItem('pomodoroSettings')
+      )
+      this.workTime = this.pomodoroSettings.workTime
+      this.shortBreak = this.pomodoroSettings.shortBreak
+      this.longBreak = this.pomodoroSettings.longBreak
+      this.cycles = this.pomodoroSettings.cycles
+    } else {
+      this.pomodoroSettings = {}
+    }
   },
 }
 </script>

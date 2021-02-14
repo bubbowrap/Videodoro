@@ -60,7 +60,7 @@
                 icon-right="restart"
                 size="is-large"
                 class="button-restart"
-                @click="resetBtnClick"
+                @click="resetTimer"
                 outlined
               >
               </b-button>
@@ -83,13 +83,15 @@ export default {
       currentCycle: 0,
       isPaused: true,
       countdown: 0,
-      seconds: 0,
+      seconds: this[this.currentSession] * 60,
       currentSessionDuration: 0,
+      currentSession: 'workTime',
     }
   },
   watch: {
-    currentSessionDuration() {
-      this.seconds = this.currentSessionDuration * 60
+    currentSession() {
+      // watches current session and updates seconds based on session
+      this.seconds = this[this.currentSession] * 60
     },
     //When seconds reach zero, do stuff
     seconds() {
@@ -98,33 +100,32 @@ export default {
         clearInterval(this.countdown)
         this.isPaused = true
         // if in work time
-        if (this.currentSessionDuration === this.workTime) {
+        if (this.currentSession === 'workTime') {
           //if complete work time, advance cycle and update homepage phrase
-
           this.currentCycle++
           // if less than cycles, do short break else do long break and then reset the cycles
           if (this.currentCycle <= this.cycles) {
             this.$refs.workTimeButton.$el.classList.add('is-inverted')
             this.$refs.sBreakButton.$el.classList.remove('is-inverted')
-            this.currentSessionDuration = this.shortBreak
-            this.$emit('currentSession', 'shortBreak')
+            this.currentSession = 'shortBreak'
+            this.$emit('currentSession', this.currentSession)
           } else {
             this.currentCycle = 0
             this.$refs.workTimeButton.$el.classList.add('is-inverted')
             this.$refs.lBreakButton.$el.classList.remove('is-inverted')
-            this.currentSessionDuration = this.longBreak
-            this.$emit('currentSession', 'longBreak')
+            this.currentSession = 'longBreak'
+            this.$emit('currentSession', this.currentSession)
           }
         }
         // if on break time
         else if (
-          this.currentSessionDuration === this.shortBreak ||
-          this.currentSessionDuration === this.longBreak
+          this.currentSession === 'shortBreak' ||
+          this.currentSession === 'longBreak'
         ) {
+          this.currentSession = 'workTime'
           this.$refs.workTimeButton.$el.classList.remove('is-inverted')
           this.$refs.sBreakButton.$el.classList.add('is-inverted')
           this.$refs.lBreakButton.$el.classList.add('is-inverted')
-          this.currentSessionDuration = this.workTime
         }
       }
     },
@@ -133,50 +134,46 @@ export default {
     //starts intervals for pomodoro
     startInterval() {
       this.isPaused = !this.isPaused
+      EventBus.$emit('startTimer', !this.isPaused)
+
       clearInterval(this.countdown)
       //pause logic
       if (!this.isPaused) {
         this.countdown = setInterval(this.decrement, 1000)
+        //lets Video Preview know the timer's started
       }
 
-      if (this.currentSessionDuration === this.workTime) {
-        this.$emit('currentSession', 'workTime')
-      } else {
-        this.$emit('currentSession', 'break')
-      }
+      this.$emit('currentSession', this.currentSession)
     },
     //reset button logic
-    resetBtnClick() {
+    resetTimer() {
       clearInterval(this.countdown)
-      this.seconds = this.currentSessionDuration * 60
+      this.seconds = this[this.currentSession] * 60
       this.isPaused = true
     },
     //updates clock
     updateClock(value) {
-      this.isPaused = true
-      clearInterval(this.countdown)
+      this.resetTimer()
+      EventBus.$emit('startTimer', !this.isPaused)
+
       //changes the work/break button status
       if (value === 'workTime') {
-        this.currentSessionDuration = this.workTime
         this.$refs.workTimeButton.$el.classList.remove('is-inverted')
-        this.$emit('currentSession', 'initialLoad')
       } else {
         this.$refs.workTimeButton.$el.classList.add('is-inverted')
       }
       if (value === 'shortBreak') {
-        this.currentSessionDuration = this.shortBreak
         this.$refs.sBreakButton.$el.classList.remove('is-inverted')
-        this.$emit('currentSession', 'shortBreak')
       } else {
         this.$refs.sBreakButton.$el.classList.add('is-inverted')
       }
       if (value === 'longBreak') {
-        this.currentSessionDuration = this.longBreak
         this.$refs.lBreakButton.$el.classList.remove('is-inverted')
-        this.$emit('currentSession', 'longBreak')
       } else {
         this.$refs.lBreakButton.$el.classList.add('is-inverted')
       }
+      this.$emit('currentSession', value)
+      this.currentSession = value
     },
     //decrements time by one second
     decrement() {
@@ -184,8 +181,8 @@ export default {
     },
   },
   created() {
-    this.seconds = this.workTime * 60
-    this.currentSessionDuration = this.workTime
+    this.currentSession = 'workTime'
+    this.seconds = this[this.currentSession] * 60
     EventBus.$on('fireTimer', () => {
       this.startInterval()
     })

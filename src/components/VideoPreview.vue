@@ -77,6 +77,7 @@ export default {
     return {
       videoModalActive: false,
       isLoading: true,
+      isPlaying: false,
       durationLimit: 5,
       prevWork: true,
       specs: {
@@ -105,10 +106,7 @@ export default {
   watch: {
     currentSession() {
       //only reloads videos if the previous session wasn't a work session.
-      if (
-        this.currentSession === 'workTime' ||
-        this.currentSession === 'initialLoad'
-      ) {
+      if (this.currentSession === 'initialLoad') {
         ;(this.prevWork = true), this.loadVideos(this.shortBreak)
       }
 
@@ -141,18 +139,29 @@ export default {
     },
     loadPlayer(id) {
       let player //eslint-disable-line
+      const _this = this
 
         player = new YT.Player('player', { //eslint-disable-line
         width: '100%',
         videoId: id,
         events: {
           onReady: onPlayerReady,
+          onStateChange: onPlayerStateChange,
         },
       })
 
       function onPlayerReady(event) {
         event.target.playVideo()
-        EventBus.$emit('fireTimer')
+        if (_this.isPlaying === false) {
+          EventBus.$emit('fireTimer')
+        }
+        _this.isPlaying = true
+      }
+
+      function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING) { //eslint-disable-line
+          _this.isPlaying = true
+        }
       }
     },
     shuffleVideos(arr) {
@@ -226,6 +235,13 @@ export default {
   created() {
     this.loadScript()
     this.loadVideos(this.shortBreak)
+    EventBus.$on('startTimer', isPlaying => {
+      if (isPlaying) {
+        this.isPlaying = true
+      } else {
+        this.isPlaying = false
+      }
+    })
   },
 }
 </script>

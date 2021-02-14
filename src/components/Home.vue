@@ -63,7 +63,9 @@ export default {
   methods: {
     updatePhrase(phrase) {
       phrase === 'workTime' ? (this.workPhase = true) : (this.workPhase = false)
-      phrase === 'break' ? (this.breakTime = true) : (this.breakTime = false)
+      phrase === 'longBreak' || phrase === 'shortBreak'
+        ? (this.breakTime = true)
+        : (this.breakTime = false)
       phrase === 'initialLoad'
         ? (this.workPhase = false)
         : (this.breaktTime = false)

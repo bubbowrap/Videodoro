@@ -193,12 +193,8 @@ export default {
           res.data.items
             .filter(item => {
               //grabs minute duration of video
-              let videoDuration =
-                item.contentDetails.duration.match(/(?<=PT)(.*)(?=M)/gm) !==
-                null
-                  ? item.contentDetails.duration.match(/(?<=PT)(.*)(?=M)/gm)
-                  : 0
-
+              let regexMatch = item.contentDetails.duration.match(/PT(.*?)M/)
+              let videoDuration = regexMatch[1] !== null ? regexMatch[1] : 0
               if (videoDuration < durationLimit) {
                 return item
               }
@@ -221,7 +217,6 @@ export default {
                 })
               }
             })
-          //console.log(res.data)
         })
         .catch(err => {
           console.error(err)

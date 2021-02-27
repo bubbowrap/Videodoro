@@ -6,7 +6,7 @@ $family-visual: 'Big Shoulders Display', cursive;
 $family-sans-serif: Arial, sans-serif;
 $primary: #f96854;
 $dark: #151E2A;
-$light: white;
+$light: #f0f6fc;
 $neutral: #4F555F;
 $font-color--dark: $dark;
 $font-color--light: $light;
@@ -20,7 +20,7 @@ $font-color: var(--font-color);
 @import "~buefy/src/scss/buefy";
 
 #app {
-  background: $light;
+  background: white;
   --font-color: #{$font-color--dark};
   color: $neutral;
 }

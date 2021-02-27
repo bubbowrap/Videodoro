@@ -5,6 +5,7 @@
       :shortBreak="shortBreak"
       :longBreak="longBreak"
       :cycles="cycles"
+      :autoplay="autoplay"
       v-on:currentSession="updatePhrase"
     />
     <section class="homepage-tagline" ref="taglineText">
@@ -31,7 +32,7 @@ import Timer from '@/components/Timer.vue'
 import VideoPreview from '@/components/VideoPreview.vue'
 
 export default {
-  props: ['workTime', 'shortBreak', 'longBreak', 'cycles'],
+  props: ['workTime', 'shortBreak', 'longBreak', 'cycles', 'autoplay'],
   data() {
     return {
       loaded: false,

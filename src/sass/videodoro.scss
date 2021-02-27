@@ -5,6 +5,12 @@
 $family-visual: 'Big Shoulders Display', cursive;
 $family-sans-serif: Arial, sans-serif;
 $primary: #f96854;
+$dark: #151E2A;
+$light: white;
+$neutral: #4F555F;
+$font-color--dark: $dark;
+$font-color--light: $light;
+$font-color: var(--font-color);
 
 // Import Bulma and Buefy styles
 @import "~bulma/sass/utilities/_all";
@@ -13,12 +19,118 @@ $primary: #f96854;
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
 
-.theme--dark {
+#app {
+  background: $light;
+  --font-color: #{$font-color--dark};
+  color: $neutral;
+}
 
+#app.theme--dark {
+    background: $dark;
+    --font-color: #{$font-color--light};
+    color: $light;
+
+    @at-root body {
+      background: $dark;
+    } 
+
+    .navbar, .navbar-menu {
+      background-color: $dark;
+    }
+
+    .loading-overlay .loading-background {
+      background: rgba($dark, .75);
+
+    }
+
+    .title, .subtitle, .label, .modal-card-title, .control-label {
+      color: $light;
+    }
+
+    hr {
+      opacity: .25;
+    }
+
+    a {
+      text-decoration: underline solid $light 2px;
+      color: $light;
+
+      &:hover {
+        text-decoration: underline solid $primary 2px;
+        color: $primary;
+      }
+    }
+
+    .button.is-black {
+      background: $light;
+      color: $dark;
+    }
+
+    .switch input[type=checkbox] + .check {
+      background: rgba($light, .1);
+    }
+
+    .switch input[type=checkbox]:checked + .check {
+      &.is-success {
+        background: $success;
+      }
+
+      &.is-info {
+        background: $info;
+      }
+    }
+
+    .button.is-black.is-inverted {
+      background: transparent;
+      color: rgba($light, .6);
+
+      &:hover {
+        background: rgba($light, .05);
+      }
+    }
+
+    .button.is-black.button-settings {
+      color: $light;
+    }
+
+    .button-start:hover {
+      color: $light;
+    }
+
+    .button.is-outlined {
+      background: none;
+      border-color: $light;
+      color: $light;
+    }
+
+    .b-tooltip.is-primary .tooltip-content {
+      background: $light;
+      color: $dark;
+    }
+    .b-tooltip.is-bottom.is-primary .tooltip-content::before {
+      border-bottom-color: $light;
+    }
+
+    .card {
+      background: $dark;
+      color: $light;
+    }
+
+    .select select, .taginput .taginput-container.is-focusable, .textarea, .input {
+      background: rgba($light, .1);
+      border: none;
+      color: $light;
+    }
+
+    .modal-card-head, .modal-card-foot {
+      background: darken($dark, 3%);
+      border-color: rgba($light, .05);
+    }
 }
 
 html {
   scroll-behavior: smooth;
+  background: transparent;
 }
 
 html, body, main {
@@ -66,7 +178,7 @@ hr {
     font-family: $family-visual;
     font-weight: 800;
     font-size: calc(1.5rem + 2.5vw);
-    color: black;
+    color: $font-color;
 
     @media screen and (min-width: 1024px) {
       font-size: 3.5rem;
@@ -154,9 +266,13 @@ hr {
 }
 
 .button.is-black {
-  background-color: #0a0a0a;
+  background-color: $dark;
   border-color: transparent;
   color: white;
+}
+
+.button.is-black.is-inverted {
+  color: $dark;
 }
 
 .button-start {
@@ -170,8 +286,8 @@ hr {
 .button-restart {
   &.is-black.is-outlined:focus {
     background: transparent;
-    border-color: black;
-    color: black;
+    border-color: $dark;
+    color: $dark;
 
     .mdi-restart {
       transition: transform 0.3s ease;
@@ -196,10 +312,10 @@ hr {
 }
 
 .b-tooltip.is-primary .tooltip-content {
-  background: black;
+  background: $dark;
 }
 .b-tooltip.is-bottom.is-primary .tooltip-content::before {
-  border-bottom-color: black;
+  border-bottom-color: $dark;
 }
 
 .timer {
@@ -212,7 +328,7 @@ hr {
 
 .timer-digits {
   font-family: $family-visual;
-  color: black;
+  color: $font-color;
   font-size: calc(8rem + 10vw);
   font-weight: 500;
   line-height: 1;

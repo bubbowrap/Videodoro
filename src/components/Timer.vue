@@ -77,7 +77,7 @@
 import { EventBus } from './../main'
 
 export default {
-  props: ['workTime', 'shortBreak', 'longBreak', 'cycles'],
+  props: ['workTime', 'shortBreak', 'longBreak', 'cycles', 'autoplay'],
   data() {
     return {
       currentCycle: 0,
@@ -99,6 +99,7 @@ export default {
         this.$refs.sessionComplete.play()
         clearInterval(this.countdown)
         this.isPaused = true
+
         // if in work time
         if (this.currentSession === 'workTime') {
           //if complete work time, advance cycle and update homepage phrase
@@ -126,6 +127,14 @@ export default {
           this.$refs.workTimeButton.$el.classList.remove('is-inverted')
           this.$refs.sBreakButton.$el.classList.add('is-inverted')
           this.$refs.lBreakButton.$el.classList.add('is-inverted')
+        }
+        // if autoplay checked, 
+        if (this.autoplay) {
+          if (this.currentSession === 'workTime' && this.currentCycle === 0) {
+            this.isPaused = true
+          } else {
+            this.startInterval()
+          }
         }
       }
     },

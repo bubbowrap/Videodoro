@@ -43,8 +43,10 @@
                   <b-field label="Pomodoro">
                     <b-input
                       type="number"
+                      :min="1"
+                      :max="250"
                       v-model.number="workTime"
-                      placeholder="Enter Work Time"
+                      placeholder="ex. 25"
                     >
                     </b-input>
                   </b-field>
@@ -53,8 +55,10 @@
                   <b-field label="Short Break">
                     <b-input
                       type="number"
+                      :min="1"
+                      :max="250"
                       v-model.number="shortBreak"
-                      placeholder="Enter Short Break Time"
+                      placeholder="ex. 5"
                     >
                     </b-input>
                   </b-field>
@@ -63,8 +67,10 @@
                   <b-field label="Long Break">
                     <b-input
                       type="number"
+                      :min="1"
+                      :max="250"
                       v-model.number="longBreak"
-                      placeholder="Enter Long Break Time"
+                      placeholder="ex. 15"
                     >
                     </b-input>
                   </b-field>
@@ -72,27 +78,40 @@
               </div>
               <div class="columns is-mobile">
                 <div class="column">
-                  <b-field label="Pomodoro Cycles">
+                  <b-field label="Cycles">
                     <b-input
                       type="number"
+                      :max="250"
                       v-model.number="cycles"
-                      placeholder="Enter Number of Cycles"
+                      placeholder="ex. 1"
                     >
                     </b-input>
                   </b-field>
                 </div>
                 <div class="column">
-                  <b-field label="Theme Color (N/A)">
+                  <b-field label="Autoplay">
+                    <b-field>
+                      <b-switch
+                        v-model="autoplay"
+                        size="is-medium"
+                        type="is-success"
+                        class="mt-1"
+                      >
+                        {{ autoplay ? true : false }}
+                      </b-switch>
+                    </b-field>
+                  </b-field>
+                </div>
+                <div class="column">
+                  <b-field label="Theme">
                     <b-field>
                       <b-switch
                         v-model="darkMode"
-                        passive-type="is-dark"
                         size="is-medium"
-                        type="is-warning"
+                        type="is-info"
                         class="mt-1"
-                        disabled
                       >
-                        {{ darkMode ? 'Light' : 'Dark' }}
+                        {{ darkMode ? 'Dark' : 'Light' }}
                       </b-switch>
                     </b-field>
                   </b-field>
@@ -122,7 +141,8 @@ export default {
       shortBreak: 5,
       longBreak: 15,
       cycles: 1,
-      darkMode: false,
+      autoplay: true,
+      darkMode: true,
       settingsModalActive: false,
       pomodoroSettings: {},
     }
@@ -135,6 +155,7 @@ export default {
         shortBreak: this.shortBreak,
         longBreak: this.longBreak,
         cycles: this.cycles,
+        autoplay: this.autoplay,
         darkMode: this.darkMode,
       }
 
@@ -145,6 +166,19 @@ export default {
 
       this.$emit('updateVars', this.pomodoroSettings)
     },
+  },
+  created() {
+    if (localStorage.getItem('pomodoroSettings')) {
+      this.pomodoroSettings = JSON.parse(
+        localStorage.getItem('pomodoroSettings')
+      )
+      this.workTime = this.pomodoroSettings.workTime
+      this.shortBreak = this.pomodoroSettings.shortBreak
+      this.longBreak = this.pomodoroSettings.longBreak
+      this.cycles = this.pomodoroSettings.cycles
+      this.autoplay = this.pomodoroSettings.autoplay
+      this.darkMode = this.pomodoroSettings.darkMode
+    }
   },
 }
 </script>

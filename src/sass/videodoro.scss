@@ -19,20 +19,16 @@ $font-color: var(--font-color);
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
 
-#app {
+body {
   background: white;
   --font-color: #{$font-color--dark};
   color: $neutral;
 }
 
-#app.theme--dark {
-    background: $dark;
-    --font-color: #{$font-color--light};
-    color: $light;
-
-    @at-root body {
-      background: $dark;
-    } 
+body.theme--dark {
+  background: $dark;
+  --font-color: #{$font-color--light};
+  color: $light;
 
     .navbar, .navbar-menu {
       background-color: $dark;

@@ -76,7 +76,7 @@ export default {
     loadVideoCarousel() {
       this.loaded = true
     },
-  },
+  }
 }
 </script>
 

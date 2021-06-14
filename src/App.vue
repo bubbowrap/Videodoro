@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="has-text-centered" :class="{ 'theme--dark': darkMode }">
+  <div id="app" class="has-text-centered">
     <Header v-on:updateVars="updateVars" />
     <Home
       :workTime="workTime"
@@ -48,6 +48,17 @@ export default {
       this.refreshKey = Math.floor(Math.random() * 10)
     },
   },
+  watch: {
+    darkMode() {
+      if (this.darkMode) {
+        document.querySelector('body').classList.add('theme--dark')
+        document.querySelector('body').classList.remove('theme--light')
+      } else {
+        document.querySelector('body').classList.add('theme--light')
+        document.querySelector('body').classList.remove('theme--dark')
+      }
+    },
+  },
   created() {
     if (localStorage.getItem('pomodoroSettings')) {
       this.pomodoroSettings = JSON.parse(
@@ -61,6 +72,13 @@ export default {
       this.darkMode = this.pomodoroSettings.darkMode
     } else {
       this.pomodoroSettings = {}
+    }
+    if (this.darkMode) {
+      document.querySelector('body').classList.add('theme--dark')
+      document.querySelector('body').classList.remove('theme--light')
+    } else {
+      document.querySelector('body').classList.add('theme--light')
+      document.querySelector('body').classList.remove('theme--dark')
     }
   },
 }
